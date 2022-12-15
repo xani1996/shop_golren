@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Create an account{% endblock %}
+{% block account_content %}
+    <div class="container m-3">
+    <h1>ساخت حساب کاربری</h1>
+    <p>لطفا با استفاده از فرم زیر حساب کاربری خودتان را بسازید</p>
+    <form method="post">
+        {{ user_form|crispy }}
+        {% csrf_token %}
+        <p><input class="btn btn-success mt-2" type="submit" value="ساخت حساب کاربری"></p>
+    </form>
+    </div>
+{% endblock %}

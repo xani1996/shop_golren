@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    ورود
+{% endblock %}
+{% block account_content %}
+    <div class="text-center mt-5 p-3">
+    <h1>ورود</h1>
+    {% if form.errors %}
+        <p >
+            رمز عبور یا نام کاربری شما صحیح نمیباشد
+        </p>
+    {% else %}
+        <p>
+            لطفا فرم زیر را برای وارد شدن پر کنید
+        </p>
+    {% endif %}
+    <div class="mt-5 ">
+        <form action="{% url 'login' %}" method="post">
+            {{ form|crispy }}
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            <p><input type="submit" class="btn btn-success btn-lg m-3" value="ورود"></p>
+        </form>
+        <p>
+            <a href="{% url "password_reset" %}">
+               رمز عبور را فراموش کرده ام.
+            </a>
+        </p>
+        <p>اگر حساب کاربری ندارید <a class="btn btn-info m-3" href="{% url 'register' %}">اینجا کلیک کنید</a></p>
+    </div>
+    </div>
+{% endblock %}

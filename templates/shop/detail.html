@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block link %}
+    <link href="{% static 'shop/css/style_side.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+{% block ecommerce_content %}
+    <div class="text-right">
+        <img src="{% if product.image %}{{ product.image.url }}{% else %}
+{% static "img/no_image.png" %}{% endif %}">
+        <h1>{{ product.name }}</h1>
+        <h2>
+            <a href="{{ product.category.get_absolute_url }}">
+                {{ product.category }}
+            </a>
+        </h2>
+        <p class="price">${{ product.price }}</p>
+        <p>
+            {{ product.description|linebreaks }}
+        </p>
+    </div>
+{% endblock %}

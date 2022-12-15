@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block link %}
+    <link href="{% static 'shop/css/style_side.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block ecommerce_content %}
+
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="#!"> فروشگاه من</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">صفحه اصلی</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!">محصولات</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">حساب کاربری</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% if request.user.is_authenticated %}
+                                <li class="m-2"> سلام {{ request.user.first_name|default:request.user.username }},
+                                    <a href="{% url "logout" %}"> خروج </a></li>
+                                <li>
+                            {% else %}
+                                <a href="{% url "login" %}">ورود</a>
+                            {% endif %}
+                            <hr class="dropdown-divider"/>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'password_change' %}">تغیر رمز</a></li>
+                            <li><a class="dropdown-item" href="{% url 'register' %}">ایجاد حساب کاربری </a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <button class="btn btn-outline-dark" type="submit">
+                        <i class="bi-cart-fill me-1"></i>
+                        Cart
+                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- Header-->
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">فروشگاه گلدرن</h1>
+                <p class="lead fw-normal text-white-50 mb-0">با بیش از 2 هزار لوازم الکترونیک و لوازم جانبی</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- sidebar-->
+    <div class="wrapper d-flex align-items-stretch">
+        <nav id="sidebar">
+            <div class="custom-menu">
+                <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                    <i class="fa fa-bars"></i>
+                    <span class="sr-only">دسته بندی ها </span>
+                </button>
+            </div>
+            <h1><a href="#" class="logo">دسته بندی ها</a></h1>
+            <ul class="list-unstyled components mb-5">
+                <li  {% if not category %} class="active" {% endif %}>
+                    <a href="{% url 'shop:product_list' %}"><span class="fa fa-home mr-3"></span>همه دسته بندی ها </a>
+                </li>
+                {% for c in categories %}
+                    <li {% if category.slug == c.slug %} {% endif %}>
+                        <a href="{{ c.get_absolute_url }}"><span class="fa fa-user mr-3"></span> {{ c.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <div class="wrapper d-flex align-items-stretch text-right">
+            <div id="content" class="p-4 p-md-5 pt-5">
+                <div class="card p-5">
+                    <h1 class="text-right">{% if category %}{{ category.name }}{% else %}محصولات
+                    {% endif %}</h1>
+                    {% for product in products %}
+                        <div class="container">
+                            <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h4>
+                            <a href="{{ product.get_absolute_url }}">
+                                <img class="card-img-top" src="{% if product.image %}{{ product.image.url }}{% else %}
+                                {% static "img/no_image.png" %}{% endif %}">
+                            </a>
+                            <br>
+                            <h5>
+                                قیمت: {{ product.price }} ریال
+                            </h5>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Section-->
+        </div>
+    </div>
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">سایت فروشگاهی گلرن 1401</p>
+        </div>
+    </footer>
+{% endblock %}

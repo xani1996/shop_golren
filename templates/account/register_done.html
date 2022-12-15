@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block account_content %}
+    <div class="card container">
+        <h1>خوش امدید {{ new_user.first_name }}!</h1>
+        <p>
+            حساب کاربری شما با موفقیت ساخته شد
+            میتوانید <a href="{% url "login" %}">وارد بشوید</a>.
+        </p>
+    </div>
+{% endblock %}
